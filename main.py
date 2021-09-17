@@ -25,7 +25,9 @@ def filter_pairs(
         order_by:str,
         limit:int
     ):
-
+    """
+    Gets filtered correlations
+    """
     # pairs/filter/?correlation_type=pearson&bigger_than=None&smaller_than=-0.8&order_by=DESC&limit=15
 
     correlations = Table(settings.DYNAMODB_TABLE)
