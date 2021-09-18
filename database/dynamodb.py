@@ -24,15 +24,19 @@ class Table(AbstractTable):
 
     def filter(self, **kwargs):
         if kwargs["bigger_than"] is not None:
-            filter_corr = Key(kwargs["correlation_type"]+"_corr").gt(str(kwargs["bigger_than"]))
+            filter_corr = Key(kwargs["correlation_type"] + "_corr").gt(
+                str(kwargs["bigger_than"])
+            )
 
         if kwargs["smaller_than"] is not None:
-            filter_corr = Key(kwargs["correlation_type"]+"_corr").lt(kwargs["smaller_than"])
+            filter_corr = Key(kwargs["correlation_type"] + "_corr").lt(
+                kwargs["smaller_than"]
+            )
 
         if kwargs["order_by"] == "DESC":
-            ScanIndexForward=False
+            ScanIndexForward = False
         else:
-            ScanIndexForward=True
+            ScanIndexForward = True
 
         try:
             limit = int(kwargs["limit"])
@@ -44,7 +48,7 @@ class Table(AbstractTable):
             KeyConditionExpression=Key("date").eq("2021-09-11") & filter_corr,
             ScanIndexForward=ScanIndexForward,
             ReturnConsumedCapacity="TOTAL",
-            Limit=limit
+            Limit=limit,
         )
 
         return response["Items"]

@@ -13,18 +13,20 @@ logger = logging.getLogger(__name__)
 
 app = FastAPI()
 
+
 @app.get("/")
 def home():
     return {"hello": "world", "say hi": settings.admin_email}
 
+
 @app.get("/pairs/filter/")
 def filter_pairs(
-        correlation_type:str,
-        bigger_than:str,
-        smaller_than:str,
-        order_by:str,
-        limit:int
-    ):
+    correlation_type: str,
+    bigger_than: str,
+    smaller_than: str,
+    order_by: str,
+    limit: int,
+):
     """
     Gets filtered correlations
     """
@@ -36,11 +38,11 @@ def filter_pairs(
         bigger_than=bigger_than,
         smaller_than=smaller_than,
         order_by=order_by,
-        limit=limit
+        limit=limit,
     )
 
     return response
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     uvicorn.run(app)
