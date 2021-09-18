@@ -6,7 +6,7 @@ import uvicorn
 from fastapi import FastAPI, Request
 
 from config import settings, logging
-from database.dynamodb import Table
+from app.database.dynamodb import Table
 
 logger = logging.getLogger(__name__)
 

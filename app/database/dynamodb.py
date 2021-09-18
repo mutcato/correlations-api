@@ -45,7 +45,7 @@ class Table(AbstractTable):
 
         response = self.table.query(
             IndexName=f"""{kwargs["correlation_type"]}_corr-index""",
-            KeyConditionExpression=Key("date").eq("2021-09-11") & filter_corr,
+            KeyConditionExpression=Key("date").eq("2021-09-16") & filter_corr,
             ScanIndexForward=ScanIndexForward,
             ReturnConsumedCapacity="TOTAL",
             Limit=limit,
