@@ -6,7 +6,7 @@ from fastapi import FastAPI, Request
 from mangum import Mangum
 import uvicorn
 
-from config import settings, logging
+from app.config import settings, logging
 from app.database.dynamodb import Table
 
 logger = logging.getLogger(__name__)

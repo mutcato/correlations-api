@@ -43,7 +43,7 @@ jobs:
           zip -r9 ../../../../api.zip .
       # Step 8
       - name: Add App to Zip file
-        run: cd ./app && zip -g ../api.zip -r .
+        run: ls -la && zip -g api.zip -r app
       # Step 9
       - name: Upload zip file artifact
         uses: actions/upload-artifact@v2
