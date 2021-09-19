@@ -2,9 +2,8 @@
 from functools import lru_cache
 from typing import Dict
 
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
 from mangum import Mangum
-import uvicorn
 
 from app.config import settings, logging
 from app.database.dynamodb import Table
@@ -20,6 +19,12 @@ def home():
     return {"hello": "world", "say hi": settings.admin_email}
 
 
+@app.get("/foo/bar/")
+def filter_pairs(bb:int = 33, cc:str="abc"):
+    print("Test trst")
+    return {"foo": bb}
+
+
 @app.get("/pairs/filter/")
 def filter_pairs(
     correlation_type: str,
@@ -33,7 +38,11 @@ def filter_pairs(
     """
     # pairs/filter/?correlation_type=pearson&bigger_than=None&smaller_than=-0.8&order_by=DESC&limit=15
 
+    print("This is for debugging 1")
+
     correlations = Table(settings.DYNAMODB_TABLE)
+    print("This is for debugging 2")
+    print(correlations)
     response = correlations.filter(
         correlation_type=correlation_type,
         bigger_than=bigger_than,
@@ -41,6 +50,7 @@ def filter_pairs(
         order_by=order_by,
         limit=limit,
     )
+    print("This is for debugging 3")
 
     return response
 

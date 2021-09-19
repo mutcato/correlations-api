@@ -9,9 +9,7 @@ logger = logging.getLogger(__name__)
 
 class AbstractTable:
     def __init__(self, table_name):
-        self.dynamodb = boto3.resource(
-            "dynamodb", config=Config(read_timeout=585, connect_timeout=585)
-        )
+        self.dynamodb = boto3.resource("dynamodb")
         self.client = boto3.client("dynamodb")
         self.table_name = table_name
 
@@ -42,7 +40,7 @@ class Table(AbstractTable):
             limit = int(kwargs["limit"])
         except:
             logger.error("You must enter an integer as limit")
-
+        logger.info(f"Sonuç geliyor{self.table_name}")
         response = self.table.query(
             IndexName=f"""{kwargs["correlation_type"]}_corr-index""",
             KeyConditionExpression=Key("date").eq("2021-09-16") & filter_corr,
@@ -50,5 +48,7 @@ class Table(AbstractTable):
             ReturnConsumedCapacity="TOTAL",
             Limit=limit,
         )
+
+        logger.info(response)
 
         return response["Items"]
