@@ -2,8 +2,9 @@
 from functools import lru_cache
 from typing import Dict
 
-import uvicorn
 from fastapi import FastAPI, Request
+from mangum import Mangum
+import uvicorn
 
 from config import settings, logging
 from app.database.dynamodb import Table
@@ -44,5 +45,4 @@ def filter_pairs(
     return response
 
 
-if __name__ == "__main__":
-    uvicorn.run(app)
+handler = Mangum(app=app)
