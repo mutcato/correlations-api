@@ -20,12 +20,6 @@ def home():
     return {"hello": "world", "say hi": settings.admin_email}
 
 
-@app.get("/foo/bar/")
-def filter_pairs(bb:int = 33, cc:str="abc"):
-    print("Test trst")
-    return {"foo": bb}
-
-
 @app.get("/pairs/filter/")
 def filter_pairs(
     correlation_type: str,
