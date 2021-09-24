@@ -27,17 +27,14 @@ def filter_pairs(
     smaller_than: str,
     order_by: str,
     limit: int,
-    date: str = str(datetime.today().date())
+    date: str = str(datetime.today().date()),
 ):
     """
     Gets filtered correlations
     """
     # pairs/filter/?correlation_type=pearson&bigger_than=None&smaller_than=-0.8&order_by=DESC&limit=15
 
-    print("This is for debugging 1")
-
     correlations = Table(settings.DYNAMODB_TABLE)
-    print("This is for debugging 2")
     print(correlations)
     response = correlations.filter(
         correlation_type=correlation_type,
@@ -47,7 +44,6 @@ def filter_pairs(
         limit=limit,
         date=date,
     )
-    print("This is for debugging 3")
 
     return response
 
