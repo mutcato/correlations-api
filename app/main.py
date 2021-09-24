@@ -1,4 +1,5 @@
 # app.py
+from datetime import datetime
 from functools import lru_cache
 from typing import Dict
 
@@ -32,6 +33,7 @@ def filter_pairs(
     smaller_than: str,
     order_by: str,
     limit: int,
+    date: str = str(datetime.today().date())
 ):
     """
     Gets filtered correlations
@@ -49,6 +51,7 @@ def filter_pairs(
         smaller_than=smaller_than,
         order_by=order_by,
         limit=limit,
+        date=date,
     )
     print("This is for debugging 3")
 
