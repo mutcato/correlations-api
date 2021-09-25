@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 import boto3
 from botocore.config import Config
 from boto3.dynamodb.conditions import Key
@@ -21,14 +23,14 @@ class Table(AbstractTable):
         AbstractTable.__init__(self, table_name)
 
     def filter(self, **kwargs):
-        if kwargs["bigger_than"] is not None:
+        if eval(kwargs["bigger_than"]) is not None:
             filter_corr = Key(kwargs["correlation_type"] + "_corr").gt(
-                str(kwargs["bigger_than"])
+                Decimal(kwargs["bigger_than"])
             )
 
-        if kwargs["smaller_than"] is not None:
+        if eval(kwargs["smaller_than"]) is not None:
             filter_corr = Key(kwargs["correlation_type"] + "_corr").lt(
-                kwargs["smaller_than"]
+                Decimal(kwargs["smaller_than"])
             )
 
         if kwargs["order_by"] == "DESC":
@@ -41,6 +43,7 @@ class Table(AbstractTable):
         except:
             logger.error("You must enter an integer as limit")
         logger.info(f"Sonuç geliyor{self.table_name}")
+
         response = self.table.query(
             IndexName=f"""{kwargs["correlation_type"]}_corr-index""",
             KeyConditionExpression=Key("date").eq(kwargs["date"]) & filter_corr,
