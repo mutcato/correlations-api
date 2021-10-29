@@ -18,7 +18,7 @@ jobs:
           architecture: x64
       # Step 3
       - name: Install Python Virtualenv
-        run: pip3 install virtualenv
+        run: pip install --upgrade pip && pip3 install virtualenv
       # Step 4
       - name: Setup Virtualenv
         uses: actions/cache@v2
@@ -29,9 +29,11 @@ jobs:
           restore-keys: |
               ${{ runner.os }}-venv-
       # Step 5
-      - name: Activate and Install Depencies into Virtual env
-        run: python -m venv venv && source venv/bin/activate && pip install --upgrade pip
-          pip3 install -r requirements.txt
+      - name: Activate and Install Dependecies into Virtual env
+        run: |
+          python3 -m venv venv && source venv/bin/activate
+          pip install --upgrade pip
+          pip install -r requirements.txt
         if: steps.cache-venv.outputs.cache-hit != 'true'
       # Step 6
       #- name: Activate venv and Run Test
@@ -40,7 +42,9 @@ jobs:
       - name: Create Zipfile archive of Dependencies
         run: |
           cd ./venv/lib/python3.8/site-packages
+          ls -la
           zip -r9 ../../../../api.zip .
+          cd -
       # Step 8
       - name: Add App to Zip file
         run: ls -la && zip -g api.zip -r app
