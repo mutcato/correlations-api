@@ -2,7 +2,7 @@ from decimal import Decimal
 
 import boto3
 from botocore.config import Config
-from boto3.dynamodb.conditions import Key
+from boto3.dynamodb.conditions import Key, Attr
 
 from app.config import settings, logging
 
@@ -38,18 +38,22 @@ class Table(AbstractTable):
         else:
             ScanIndexForward = True
 
-        try:
-            limit = int(kwargs["limit"])
-        except:
-            logger.error("You must enter an integer as limit")
         logger.info(f"Sonuç geliyor{self.table_name}")
+
+        # response = self.table.query(
+        #     IndexName=f"""{kwargs["correlation_type"]}_corr-index""",
+        #     KeyConditionExpression=Key("date").eq(kwargs["date"]) & filter_corr,
+        #     ScanIndexForward=ScanIndexForward,
+        #     ReturnConsumedCapacity="TOTAL",
+        #     Limit=limit,
+        # )
 
         response = self.table.query(
             IndexName=f"""{kwargs["correlation_type"]}_corr-index""",
             KeyConditionExpression=Key("date").eq(kwargs["date"]) & filter_corr,
+            FilterExpression=Attr("pair").contains(kwargs["contain"]),
             ScanIndexForward=ScanIndexForward,
             ReturnConsumedCapacity="TOTAL",
-            Limit=limit,
         )
 
         logger.info(response)
