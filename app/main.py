@@ -1,27 +1,25 @@
 # app.py
-from datetime import datetime
 from functools import lru_cache
-from typing import Dict
+from fastapi.params import Depends
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from mangum import Mangum
 
 from app.config import settings, logging
 from app.database.dynamodb import Table
 
+from .serializers import Filter
+
 logger = logging.getLogger(__name__)
 
 
 app = FastAPI()
 
-origins = [
-    "http://localhost:3000",
-]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=settings.CORS_WHITELIST,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -34,14 +32,8 @@ def home():
 
 
 @app.get("/pairs/filter/")
-def filter_pairs(
-    correlation_type: str,
-    bigger_than: str,
-    smaller_than: str,
-    order_by: str,
-    limit: int,
-    date: str = str(datetime.today().date()),
-):
+def filter_pairs(filter: Filter = Depends()):
+    print(filter)
     """
     Gets filtered correlations
     """
@@ -49,14 +41,7 @@ def filter_pairs(
 
     correlations = Table(settings.DYNAMODB_TABLE)
     print(correlations)
-    response = correlations.filter(
-        correlation_type=correlation_type,
-        bigger_than=bigger_than,
-        smaller_than=smaller_than,
-        order_by=order_by,
-        limit=limit,
-        date=date,
-    )
+    response = correlations.filter(**filter.dict())
 
     return response
 

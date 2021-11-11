@@ -11,10 +11,16 @@ class Settings(BaseSettings):
 
 class TestSettings(Settings):
     DYNAMODB_TABLE: str = "correlations"
+    CORS_WHITELIST = [
+        "http://localhost:3000",
+    ]
 
 
 class ProdSettings(Settings):
     DYNAMODB_TABLE: str = "correlations"
+    CORS_WHITELIST = [
+        "http://mywebsite.com",
+    ]
 
 
 # Set it TestSettings() or ProdSettings()
