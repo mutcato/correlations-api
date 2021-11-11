@@ -4,3 +4,4 @@ boto3
 requests
 pytest
 mangum
+logram
