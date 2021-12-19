@@ -58,4 +58,4 @@ class Table(AbstractTable):
 
         logger.info(response)
 
-        return response["Items"]
+        return {"data": response["Items"]}
