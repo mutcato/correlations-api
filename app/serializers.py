@@ -1,4 +1,5 @@
 from datetime import datetime
+import decimal
 from typing import Dict, List, Optional
 
 from pydantic import BaseModel
@@ -16,17 +17,17 @@ class Filter(BaseModel):
 
 
 class FilterSingleResponse(BaseModel):
-    """Serializes for filter endpoint"""
+    """Serializes filter endpoint"""
 
     pair: str
     master: str
     slave: str
-    pearson_corr: str
-    kendall_corr: str
-    spearman_corr: str
+    pearson_corr: decimal.Decimal
+    kendall_corr: decimal.Decimal
+    spearman_corr: decimal.Decimal
     date: str
     interval: str
-    
+
 
 class FilterResponse(BaseModel):
     data: List[FilterSingleResponse]
